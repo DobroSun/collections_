@@ -32,6 +32,11 @@ class Queue():
         self.size += 1
 
     def popleft(self):
+        if self.size == 1:
+            self.size -= 1
+            tmp = self.first.value
+            self.first = None
+            return tmp
         if self.first is not None:
             p = self.first.value
             next_node = self.first.next
