@@ -1,3 +1,5 @@
+#! usr/bin/python3
+
 class Node():
     def __init__(self, k, v):
         self.key = k
@@ -32,25 +34,40 @@ class BinaryTree():
             prev.left = cur if cur.key < prev.key else prev.left
 
     def print_(self):
-        thislevel = [self.head]
-        while thislevel:
-            nextlevel = []
-            for i in thislevel:
-                print(i, end="  ")
-                if i.left:
-                    nextlevel.append(i)
-                if i.right:
-                    nextlevel.append(i)
-                thislevel = nextlevel
-
-
-
+        from queue import Queue
+        q = Queue()
+        q.addright(self.head)
+        count = 1
+        print(self.head.key)
+        while q.size:
+            iteration = 0
+            for _ in range(count):
+                if iteration == 0:
+                    count = 0 
+                cur = q.popleft()
+                if cur is None:
+                    return
+                if [cur.left, cur.right] == [None, None]:
+                    continue
+                for nei in [cur.left, cur.right]:
+                    if nei is not None:
+                        q.addright(nei)
+                        count += 1 
+                iteration += 1
+            tmp = q.first
+            while tmp is not None:
+                print(tmp.value.key, end="  ")
+                tmp = tmp.next
+            print()
+             
 
 
 
 
     def print_levels(self):
         # Работает только при отсутствии повторяемых ключей.
+        # Корректно только при заполнении дерева без удалений узлов
+        # Корректно только при отсутствии балансировок
         self.dis = dict(sorted(self.dis.items(), key=lambda x: x[1]))
         tmp_dis = 0
         for i in self.dis:
