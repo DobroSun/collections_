@@ -33,7 +33,7 @@ class BinaryTree():
             prev.right = cur if cur.key >= prev.key else prev.right
             prev.left = cur if cur.key < prev.key else prev.left
 
-    def print_(self):
+    def print_keys(self):
         from queue import Queue
         q = Queue()
         q.addright(self.head)
@@ -59,27 +59,56 @@ class BinaryTree():
                 print(tmp.value.key, end="  ")
                 tmp = tmp.next
             print()
-             
+
+    def pop(self, k):
+        cur = self.head
+        while cur is not None:
+            if cur.key == k:
+                tmp = cur.value
+                break
+            prev = cur
+            cur = cur.right if k >= cur.key else cur.left
+        if cur.left:
+            next_ = cur.left
+            prev_ = None
+            while next_.right:     # Поиск самого большего в левой ветви
+                prev_ = next_ 
+                next_ = next_.right
+            next_ = cur
+
+            next_.left = cur.left
+            next_.right = cur.right
+            next_.parent = None if cur.key == self.head.key else prev
+
+            cur = None
+            if prev_:
+                prev_.right = None
+        elif cur.right:
+            next_ = cur.right
+            prev_ = None
+            while next_.left:     # Поиск самого меньшего в правой ветви
+                prev_ = next_ 
+                next_ = next_.left
+            next_ = cur
+
+            next_.left = cur.left
+            next_.right = cur.right
+            next_.parent = None if cur.key == self.head.key else prev
+
+            cur = None
+            if prev_:
+                prev_.left = None 
+        else:
+            cur = None
+            prev.right = None if prev.right.key == k else prev.right
+            prev.left = None if prev.left.key == k else prev.left
+                
+        self.size -= 1 
+        return tmp
 
 
 
 
-    def print_levels(self):
-        # Работает только при отсутствии повторяемых ключей.
-        # Корректно только при заполнении дерева без удалений узлов
-        # Корректно только при отсутствии балансировок
-        self.dis = dict(sorted(self.dis.items(), key=lambda x: x[1]))
-        tmp_dis = 0
-        for i in self.dis:
-            if tmp_dis == self.dis[i]:
-                print(i, end="  ")
-            else:
-                print()
-                print(i, end="   ")
-            tmp_dis = self.dis[i]
-    
-    
-    
     def search(self, k):
         cur = self.head
         while cur is not None:
@@ -99,4 +128,6 @@ if __name__ == "__main__":
     tree.add(1, "1")
     tree.add(9, "9")
     tree.add(2, "2")
-    tree.print_()
+    tree.print_keys()
+    tree.pop(3)
+    tree.print_keys()
