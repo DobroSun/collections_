@@ -62,14 +62,26 @@ class BinaryTree():
 
     def pop(self, k):
         cur = self.head
+        prev = self.head.parent
+        if k > cur.key:
+            branch = "right"
+        elif k < cur.key:
+            branch = "left"
+        else:
+            branch = None
         while cur is not None:
             if cur.key == k:
                 tmp = cur.value
+                print("I'm here")
                 break
             prev = cur
             cur = cur.right if k >= cur.key else cur.left
-        if cur.left:
-            next_ = cur.left
+        print("We follow %s branch" % branch)    
+        print("This is previous node", prev.key)
+        print("I'm current: ", cur.key)
+        if branch == "left" :
+            print("Now I'm left node", cur.left.key)
+            next_ = cur
             prev_ = None
             while next_.right:     # Поиск самого большего в левой ветви
                 prev_ = next_ 
@@ -79,29 +91,44 @@ class BinaryTree():
             next_.left = cur.left
             next_.right = cur.right
             next_.parent = None if cur.key == self.head.key else prev
-
-            cur = None
+            
+            if prev:
+                prev.right = next_ if prev.right.key == k else prev.right
+                prev.left = next_ if prev.left.key == k else prev.left
+            
+            cur.right = None
+            cur.parent = None
+            cur.left = None
             if prev_:
                 prev_.right = None
-        elif cur.right:
-            next_ = cur.right
+        elif branch == "right":
+
+            print("Now I'm right node", cur.right.key)
+            next_ = cur 
             prev_ = None
             while next_.left:     # Поиск самого меньшего в правой ветви
                 prev_ = next_ 
                 next_ = next_.left
-            next_ = cur
+            print("I found min in left branch", next_.key)
+            
+            print("Current node ", cur.key)
+            print("I'm previous node", prev_.key)
+            next_.key, cur.key = cur.key, next_.key
+            next_.value, cur.value = cur.value, next_.value
 
-            next_.left = cur.left
-            next_.right = cur.right
-            next_.parent = None if cur.key == self.head.key else prev
+            if next_.right:
+                pass    
+            
 
-            cur = None
-            if prev_:
-                prev_.left = None 
-        else:
-            cur = None
-            prev.right = None if prev.right.key == k else prev.right
-            prev.left = None if prev.left.key == k else prev.left
+
+            else:
+                cur.right = None
+            
+                cur.parent = None
+                cur.left = None
+                if prev:
+                    prev.right = None if prev.right.key == k else prev.right
+                    prev.left = None if prev.left.key == k else prev.left
                 
         self.size -= 1 
         return tmp
@@ -129,5 +156,5 @@ if __name__ == "__main__":
     tree.add(9, "9")
     tree.add(2, "2")
     tree.print_keys()
-    tree.pop(3)
+    tree.pop(7)
     tree.print_keys()

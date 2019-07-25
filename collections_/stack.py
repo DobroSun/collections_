@@ -56,7 +56,6 @@ class Stack():
     return self.arr
 
 
-
 if __name__ == "__main__":
   A = Stack()
   A.append(7)

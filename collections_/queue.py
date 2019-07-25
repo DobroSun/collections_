@@ -124,19 +124,33 @@ class Queue():
         print()
         print("]")
 
+    def sort(self):
+        for _ in range(self.size):
+            cur = self.first
+            while cur.next is not None:
+                if cur.value > cur.next.value:
+                    cur.value, cur.next.value = cur.next.value, cur.value
+                cur = cur.next
+
 
 if __name__ == "__main__":
     queue = Queue()
     queue.addleft(5)
     queue.addleft(2)
+    queue.addleft(10)
+    queue.addright(9)
     queue.addright(8)
     queue.addleft(4)
     queue.addright(3)
     queue.popright()
     queue.popleft()
+
+    queue.addright(8)
+    queue.addleft(4)
+    queue.addright(3)
     queue.print_()
-    print(queue.pop_k(8))
+    print("-" * 10)
+    queue.sort()
     queue.print_()
 
 
-    print(type(queue))
