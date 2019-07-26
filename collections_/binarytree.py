@@ -1,4 +1,4 @@
-#! usr/bin/python3
+#!/usr/bin/python3
 
 class Node():
     def __init__(self, k, v):
@@ -78,9 +78,7 @@ class BinaryTree():
             cur = cur.right if k >= cur.key else cur.left
         print("We follow %s branch" % branch)    
         print("This is previous node", prev.key)
-        print("I'm current: ", cur.key)
         if branch == "left" :
-            print("Now I'm left node", cur.left.key)
             next_ = cur
             prev_ = None
             while next_.right:     # Поиск самого большего в левой ветви
@@ -103,7 +101,6 @@ class BinaryTree():
                 prev_.right = None
         elif branch == "right":
 
-            print("Now I'm right node", cur.right.key)
             next_ = cur 
             prev_ = None
             while next_.left:     # Поиск самого меньшего в правой ветви
@@ -111,25 +108,25 @@ class BinaryTree():
                 next_ = next_.left
             print("I found min in left branch", next_.key)
             
-            print("Current node ", cur.key)
-            print("I'm previous node", prev_.key)
             next_.key, cur.key = cur.key, next_.key
             next_.value, cur.value = cur.value, next_.value
-
+            print("Next value and key: ", next_.value, next_.key)
+            print("I'm previous for next_: ", cur.key)
+            
             if next_.right:
-                pass    
-            
-
-
+                print("--------------", prev.key)
+                prev.right = next_.right
+                next_.right.parent = prev
             else:
-                cur.right = None
-            
-                cur.parent = None
+                next_ = None
                 cur.left = None
-                if prev:
-                    prev.right = None if prev.right.key == k else prev.right
-                    prev.left = None if prev.left.key == k else prev.left
-                
+                prev.left = None
+        else:
+            pass
+               
+
+
+
         self.size -= 1 
         return tmp
 
@@ -156,5 +153,5 @@ if __name__ == "__main__":
     tree.add(9, "9")
     tree.add(2, "2")
     tree.print_keys()
-    tree.pop(7)
+    tree.pop(9)
     tree.print_keys()
