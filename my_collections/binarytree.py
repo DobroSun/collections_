@@ -202,12 +202,16 @@ class BinaryTree():
                     dfs(new_vert, new_dis, dict_)
             dict_ = dict(sorted(dict_.items(), key=lambda x: x[1], reverse=True))
             for key in dict_:
-                return key, dict_[key]
+                return dict_[key]
         
         left_h = dfs(cur.left, 1, {}) if cur.left else (None, 0)
         right_h = dfs(cur.right, 1, {}) if cur.right else (None, 0)
-        max_ = max(left_h[1], right_h[1]) 
-        return left_h if max_ == left_h[1] else right_h
+        dict_ = {'left_h': left_h, 'right_h': right_h}
+        return dict_
+    
+    def check_height(self, k):
+        self.height(k)
+        
 
     def search(self, k):
         cur = self.head
