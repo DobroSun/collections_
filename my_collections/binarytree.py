@@ -34,6 +34,9 @@ class BinaryTree():
             prev.left = cur if cur.key < prev.key else prev.left
 
     def print_keys(self):
+        if not self.size:
+            print('')
+            return
         from queue import Queue
         q = Queue()
         q.addright(self.head)
@@ -61,6 +64,8 @@ class BinaryTree():
             print()
 
     def pop(self, k):
+        if not self.size:
+            return
         cur = self.head
         prev = self.head.parent
         while cur is not None:
@@ -164,6 +169,9 @@ class BinaryTree():
         return tmp
 
     def print_in_line(self):
+        if not self.size:
+            print('')
+            return
         from stack import Stack
         from queue import Queue
         q = Queue()
@@ -189,14 +197,14 @@ class BinaryTree():
 if __name__ == "__main__":
 
     tree = BinaryTree()
-    tree.add(3, "3")
-    tree.add(7, "7")
-    tree.add(8, "8")
-    tree.add(4, "4")
-    tree.add(0, "0")
-    tree.add(1, "1")
-    tree.add(9, "9")
-    tree.add(2, "2") 
+   # tree.add(3, "3")
+  #  tree.add(7, "7")
+ #   tree.add(8, "8")
+#    tree.add(4, "4")
+   # tree.add(0, "0")
+  #  tree.add(1, "1")
+ #   tree.add(9, "9")
+#    tree.add(2, "2") 
     tree.print_keys()
     tree.pop(3)
     tree.print_keys()
