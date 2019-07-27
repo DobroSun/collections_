@@ -21,17 +21,17 @@ class BinaryTree():
         self.size += 1
         if self.head is None:
             self.head = Node(k, v)
-            self.dis = {k: 0}
         else:
             cur = self.head
             while cur is not None:
                 prev = cur
                 cur = cur.right if k >= cur.key else cur.left
             cur = Node(k, v)
-            self.dis[cur.key] = self.dis[prev.key] + 1
             cur.parent = prev
             prev.right = cur if cur.key >= prev.key else prev.right
             prev.left = cur if cur.key < prev.key else prev.left
+            
+            self.check_balance(cur)
 
     def print_keys(self):
         if not self.size:
@@ -193,7 +193,7 @@ class BinaryTree():
             while cur is not None:
                 if cur.key == node_key:
                     break
-                cur = cur.right if node_key >= cur.key else cur.left 
+                cur = cur.right if node_key >= cur.key else cur.left
         def dfs(vertex, dis, dict_):
             dict_[vertex.key] = dis
             for new_vert in [vertex.left, vertex.right]:
@@ -204,15 +204,26 @@ class BinaryTree():
             for key in dict_:
                 return dict_[key]
         
-        left_h = dfs(cur.left, 1, {}) if cur.left else (None, 0)
-        right_h = dfs(cur.right, 1, {}) if cur.right else (None, 0)
-        dict_ = {'left_h': left_h, 'right_h': right_h}
-        return dict_
-    
-    def check_height(self, k):
-        self.height(k)
-        
+        left_h = dfs(cur.left, 1, {}) if cur.left else 0
+        right_h = dfs(cur.right, 1, {}) if cur.right else 0
+        return left_h, right_h
 
+    def check_balance(self, node):
+        def check_height(node_key):
+            left_h, right_h = self.height(node_key)
+            side = 'left' if left_h > right_h else 'right'
+            if max(left_h, right_h) - min(left_h, right_h) > 1:
+                self.balance(node, side)
+        
+        while node is not None:
+            node_key = node.key
+            check_height(node_key)
+            node = node.parent
+    
+    def balance(self, node, side):
+        while True:
+            print("I'm balancing %d node on %s side" % (node.key, side))
+            self.print_keys()
     def search(self, k):
         cur = self.head
         while cur is not None:
@@ -234,4 +245,5 @@ if __name__ == "__main__":
     tree.print_keys()
     tree.pop(3)
     tree.print_keys()
+    
     print(tree.height())
