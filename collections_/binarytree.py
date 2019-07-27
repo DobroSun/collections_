@@ -63,75 +63,120 @@ class BinaryTree():
     def pop(self, k):
         cur = self.head
         prev = self.head.parent
-        if k > cur.key:
-            branch = "right"
-        elif k < cur.key:
-            branch = "left"
-        else:
-            branch = None
         while cur is not None:
             if cur.key == k:
                 tmp = cur.value
-                print("I'm here")
                 break
             prev = cur
             cur = cur.right if k >= cur.key else cur.left
-        print("We follow %s branch" % branch)    
-        print("This is previous node", prev.key)
-        if branch == "left" :
-            next_ = cur
-            prev_ = None
-            while next_.right:     # Поиск самого большего в левой ветви
-                prev_ = next_ 
-                next_ = next_.right
-            next_ = cur
-
-            next_.left = cur.left
-            next_.right = cur.right
-            next_.parent = None if cur.key == self.head.key else prev
-            
-            if prev:
-                prev.right = next_ if prev.right.key == k else prev.right
-                prev.left = next_ if prev.left.key == k else prev.left
-            
-            cur.right = None
-            cur.parent = None
-            cur.left = None
-            if prev_:
-                prev_.right = None
-        elif branch == "right":
-
-            next_ = cur 
-            prev_ = None
-            while next_.left:     # Поиск самого меньшего в правой ветви
-                prev_ = next_ 
-                next_ = next_.left
-            print("I found min in left branch", next_.key)
-            
-            next_.key, cur.key = cur.key, next_.key
-            next_.value, cur.value = cur.value, next_.value
-            print("Next value and key: ", next_.value, next_.key)
-            print("I'm previous for next_: ", cur.key)
-            
-            if next_.right:
-                print("--------------", prev.key)
-                prev.right = next_.right
-                next_.right.parent = prev
-            else:
-                next_ = None
+        if self.head.key == k:
+            if cur.left:
+                next_ = cur.left
+                prev_ = None
+                while next_.right:     # Поиск самого большего в левой ветви
+                    prev_ = next_ 
+                    next_ = next_.right
+             
+                next_.left = cur.left
+                next_.right = cur.right
+                next_.parent = None if cur.key == self.head.key else prev
+                
+                self.head = next_
+                
+                cur.right = None
+                cur.parent = None
                 cur.left = None
-                prev.left = None
-        else:
-            pass
+                del cur
+
+                if prev_:
+                    prev_.right = None
+
+ 
+            elif cur.right:
+                next_ = cur 
+                prev_ = None
+                while next_.left:     # Поиск самого меньшего в правой ветви
+                    prev_ = next_ 
+                    next_ = next_.left
+            
+                next_.left = cur.left
+                next_.right = cur.right
+                next_.parent = None if cur.key == self.head.key else prev
                
+                self.head = next_
+               
+                cur.right = None
+                cur.parent = None
+                cur.left = None
+                del cur
 
+                if prev_:
+                    prev_.left = None
+            else:
+                self.head = None
 
+                cur.right = None
+                cur.parent = None
+                cur.left = None
+                del cur
+        else:
+            if cur.left:
+                next_ = cur.left
+                next_.right = cur.right
+                next_.parent = cur.parent
+                 
+                cur.right = None
+                cur.parent = None
+                cur.left = None
+                del cur 
 
+                if prev.left:
+                    prev.left = next_ if prev.left.key == k else prev.left
+                if prev.right:
+                    prev.right = next_ if prev.right.key == k else prev.right
+
+            elif cur.right:
+                next_ = cur.right
+                next_.left = cur.left
+                next_.parent = cur.parent
+                 
+                cur.right = None
+                cur.parent = None
+                cur.left = None
+                del cur 
+               
+                if prev.left:
+                    prev.left = next_ if prev.left.key == k else prev.left
+                if prev.right:
+                    prev.right = next_ if prev.right.key == k else prev.right                
+            else:
+                cur.right = None
+                cur.parent = None
+                cur.left = None
+                del cur 
+                
+                if prev.left:
+                    prev.left = None if prev.left.key == k else prev.left
+                if prev.right:
+                    prev.right = None if prev.right.key == k else prev.right                 
+                
         self.size -= 1 
         return tmp
 
-
-
+    def print_in_line(self):
+        from stack import Stack
+        from queue import Queue
+        q = Queue()
+        q.addright(self.head)
+        A = Stack()
+        A.append(self.head.key)
+        while q.size:
+            cur = q.popleft()
+            for nei in [cur.left, cur.right]:
+                if nei is not None:
+                    q.addright(nei)
+                    A.append(nei.key)
+        return A.arr
 
     def search(self, k):
         cur = self.head
@@ -141,8 +186,8 @@ class BinaryTree():
             cur = cur.right if k >= cur.key else cur.left
         return False
 
-
 if __name__ == "__main__":
+
     tree = BinaryTree()
     tree.add(3, "3")
     tree.add(7, "7")
@@ -151,7 +196,7 @@ if __name__ == "__main__":
     tree.add(0, "0")
     tree.add(1, "1")
     tree.add(9, "9")
-    tree.add(2, "2")
+    tree.add(2, "2") 
     tree.print_keys()
-    tree.pop(9)
+    tree.pop(3)
     tree.print_keys()

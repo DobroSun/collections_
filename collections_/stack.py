@@ -5,7 +5,10 @@ class Stack():
         self.arr = []
         self.min = self.max = None
         self.size = 0
-
+    
+    def __str__(self):
+        return str(self.arr)
+    
     def append(self, x):
         self.arr.append(x)
         self.size += 1
