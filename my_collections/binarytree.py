@@ -185,6 +185,29 @@ class BinaryTree():
                     q.addright(nei)
                     A.append(nei.key)
         return A.arr
+    
+    def height(self, node_key=None):
+        node_key = node_key or self.head.key
+        if self.search(node_key):
+            cur = self.head
+            while cur is not None:
+                if cur.key == node_key:
+                    break
+                cur = cur.right if node_key >= cur.key else cur.left 
+        def dfs(vertex, dis, dict_):
+            dict_[vertex.key] = dis
+            for new_vert in [vertex.left, vertex.right]:
+                if new_vert is not None:
+                    new_dis = dict_[vertex.key] + 1
+                    dfs(new_vert, new_dis, dict_)
+            dict_ = dict(sorted(dict_.items(), key=lambda x: x[1], reverse=True))
+            for key in dict_:
+                return key, dict_[key]
+        
+        left_h = dfs(cur.left, 1, {}) if cur.left else (None, 0)
+        right_h = dfs(cur.right, 1, {}) if cur.right else (None, 0)
+        max_ = max(left_h[1], right_h[1]) 
+        return left_h if max_ == left_h[1] else right_h
 
     def search(self, k):
         cur = self.head
@@ -195,16 +218,16 @@ class BinaryTree():
         return False
 
 if __name__ == "__main__":
-
     tree = BinaryTree()
-   # tree.add(3, "3")
-  #  tree.add(7, "7")
- #   tree.add(8, "8")
-#    tree.add(4, "4")
-   # tree.add(0, "0")
-  #  tree.add(1, "1")
- #   tree.add(9, "9")
-#    tree.add(2, "2") 
+    tree.add(3, "3")
+    tree.add(7, "7")
+    tree.add(8, "8")
+    tree.add(4, "4")
+    tree.add(0, "0")
+    tree.add(1, "1")
+    tree.add(9, "9")
+    tree.add(2, "2") 
     tree.print_keys()
     tree.pop(3)
     tree.print_keys()
+    print(tree.height())

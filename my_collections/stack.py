@@ -1,4 +1,4 @@
-#! usr/bin/python3
+#!/usr/bin/python3
 
 class Stack():
     def __init__(self):
@@ -56,6 +56,8 @@ class Stack():
         self.arr[:] = mergesort(self.arr)
         return self.arr
 
+    def clear(self):
+        Stack.__init__(self)
 
 if __name__ == "__main__":
     A = Stack()
@@ -70,4 +72,6 @@ if __name__ == "__main__":
     print(A.arr, A.min, A.max)
     print(A.arr)
     A.sort()
+    print(A.arr)
+    A.clear()
     print(A.arr)
