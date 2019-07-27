@@ -132,6 +132,9 @@ class Queue():
                     cur.value, cur.next.value = cur.next.value, cur.value
                 cur = cur.next
 
+    def clear(self):
+        Queue.__init__(self)
+
 
 if __name__ == "__main__":
     queue = Queue()
@@ -149,8 +152,10 @@ if __name__ == "__main__":
     queue.addleft(4)
     queue.addright(3)
     queue.print_()
-    print("-" * 10)
+    print('-' * 100)
     queue.sort()
     queue.print_()
-
+    print('-' * 100)
+    queue.clear()
+    queue.print_()
 

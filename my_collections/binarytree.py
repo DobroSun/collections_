@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import time
+
 class Node():
     def __init__(self, k, v):
         self.key = k
@@ -223,7 +225,8 @@ class BinaryTree():
     def balance(self, node, side):
         while True:
             print("I'm balancing %d node on %s side" % (node.key, side))
-            self.print_keys()
+            print(self.print_in_line())
+             
     def search(self, k):
         cur = self.head
         while cur is not None:
