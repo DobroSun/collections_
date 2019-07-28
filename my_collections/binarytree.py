@@ -196,6 +196,10 @@ class BinaryTree():
                 if cur.key == node_key:
                     break
                 cur = cur.right if node_key >= cur.key else cur.left
+        else: 
+            cur = Node(node_key, node_key)
+            cur.right = None
+            cur.left = None
         def dfs(vertex, dis, dict_):
             dict_[vertex.key] = dis
             for new_vert in [vertex.left, vertex.right]:
@@ -205,48 +209,111 @@ class BinaryTree():
             dict_ = dict(sorted(dict_.items(), key=lambda x: x[1], reverse=True))
             for key in dict_:
                 return dict_[key]
-        
         left_h = dfs(cur.left, 1, {}) if cur.left else 0
         right_h = dfs(cur.right, 1, {}) if cur.right else 0
         return left_h, right_h
 
     def check_balance(self, node):
-        def check_height(node_key):
-            left_h, right_h = self.height(node_key)
+        def check_height(node):
+            left_h, right_h = self.height(node.key)
             side = 'left' if left_h > right_h else 'right'
             if max(left_h, right_h) - min(left_h, right_h) > 1:
                 self.balance(node, side)
         
-        while node is not None:
-            node_key = node.key
-            check_height(node_key)
+        while node.parent is not None:
             node = node.parent
+            check_height(node)
     
     def balance(self, node, side):
-        while True:
-            print("I'm balancing %d node on %s side" % (node.key, side))
-            print(self.print_in_line())
-             
+        prev = node.parent
+        branch = side if prev == None else ""
+        if prev:
+            branch = 'left' if node.key < self.head.key else 'right'        
+
+        # крайнее правое
+        if side == branch and side == 'right': 
+            self.small_left_turn(node)
+       
+        # крайнее левое 
+        elif side == branch and side == 'letf':            
+            self.small_right_turn(node)
+        
+        # правое центральное
+        elif side != branch and side == 'right': 
+            self.big_left_turn(node)
+        
+        # левое центральное 
+        elif side != branch and side == 'left': 
+            self.big_right_turn(node)
+   
+   def small_left_turn(self, node):
+        print("Small_left_turn balancing")
+        cur = node
+        prev = cur.parent
+        
+        next_ = cur.right
+        if prev:
+            prev.right = next_
+        
+        cur.right = next_.left
+        next_.left = cur
+        cur.parent = next_
+        next_.parent = prev
+        
+        if cur == self.head:
+            self.head = next_
+            
+        if cur.right:            
+            cur.right.parent = cur
+
+    def small_right_turn(self, node):
+        print("Small_right_turn balancing")
+        cur = node
+        prev = cur.parent
+        
+        next_ = cur.left
+        if prev:
+            prev.left = next_
+        
+        cur.left = next_.right
+        next_.right = cur
+        cur.parent = next_
+        next_.parent = prev
+        
+        if cur == self.head:
+            self.head = next_
+            
+        if cur.left:            
+            cur.left.parent = cur
+
+
     def search(self, k):
+        if k == None:
+            return False
+
         cur = self.head
         while cur is not None:
             if cur.key == k:
                 return True
             cur = cur.right if k >= cur.key else cur.left
         return False
-
+    
+    
+    
 if __name__ == "__main__":
     tree = BinaryTree()
+    print('-' *100)
+    print(tree.search(None)) 
+    print('-' *100)
     tree.add(3, "3")
     tree.add(7, "7")
     tree.add(8, "8")
-    tree.add(4, "4")
-    tree.add(0, "0")
+
+    tree.add(2, "2")
+    print(tree.print_in_line())
     tree.add(1, "1")
-    tree.add(9, "9")
-    tree.add(2, "2") 
+    tree.add(7, "7")
+    tree.add(8, "8")
+
     tree.print_keys()
-    tree.pop(3)
-    tree.print_keys()
-    
-    print(tree.height())
+    print(tree.print_in_line())
