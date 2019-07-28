@@ -1,15 +1,25 @@
 #!/usr/bin/python3
 
 class Stack():
-    def __init__(self):
+    def __init__(self, *args):
         self.arr = []
         self.min = self.max = None
         self.size = 0
     
+        self.args = args
+        self.create_stack(self.args)
+
+    def create_stack(self, args):
+        if args:
+            for iterable in args:
+                for num in iterable:
+                    self.append(num)
+
     def __str__(self):
         return str(self.arr)
     
     def append(self, x):
+        assert type(x) is type(1) or type(x) is type(1.34)
         self.arr.append(x)
         self.size += 1
         if len(self.arr) == 1:
@@ -58,20 +68,3 @@ class Stack():
 
     def clear(self):
         Stack.__init__(self)
-
-if __name__ == "__main__":
-    A = Stack()
-    A.append(7)
-    A.append(1)
-    A.append(6)
-    A.append(6)
-    A.append(5)
-    A.append(2)
-    A.append(8)
-    A.append(3)
-    print(A.arr, A.min, A.max)
-    print(A.arr)
-    A.sort()
-    print(A.arr)
-    A.clear()
-    print(A.arr)

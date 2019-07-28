@@ -1,4 +1,5 @@
 #! /usr/bin/python3
+import sys
 
 class Node():
     def __init__(self, p=None, n=None, v=None):
@@ -8,10 +9,19 @@ class Node():
 
 
 class Queue():
-    def __init__(self):
+    def __init__(self, *args):
         self.first = None
         self.last = None
         self.size = 0
+        
+        self.args = args
+        self.create_queue(self.args)
+
+    def create_queue(self, args):
+        if args:
+            for iterable in args:
+                for num in iterable:
+                    self.addright(num)
 
     def addleft(self, x):
         if self.first is None:
@@ -137,7 +147,10 @@ class Queue():
 
 
 if __name__ == "__main__":
-    queue = Queue()
+    queue = Queue([2], {3: 2, 4: 5, 1: -10}, (1, 9, 0, 3))
+    print(queue.args)
+    queue.print_()
+    sys.exit(0)
     queue.addleft(5)
     queue.addleft(2)
     queue.addleft(10)

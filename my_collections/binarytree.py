@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-import time
-
 class Node():
     def __init__(self, k, v):
         self.key = k
@@ -246,7 +244,7 @@ class BinaryTree():
         elif side != branch and side == 'left': 
             self.big_right_turn(node)
    
-   def small_left_turn(self, node):
+    def small_left_turn(self, node):
         print("Small_left_turn balancing")
         cur = node
         prev = cur.parent
@@ -302,9 +300,9 @@ class BinaryTree():
     
 if __name__ == "__main__":
     tree = BinaryTree()
-    print('-' *100)
+    print('-' * 100)
     print(tree.search(None)) 
-    print('-' *100)
+    print('-' * 100)
     tree.add(3, "3")
     tree.add(7, "7")
     tree.add(8, "8")
