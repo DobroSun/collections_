@@ -55,7 +55,10 @@ class TestStack(unittest.TestCase):
         A.clear()
         self.assertEqual(A.arr, [])
 
+class TestHashMap(unittest.TestCase):
+    pass
 
+"""
 class TestHeap(unittest.TestCase):
     def test_add(self):
         heap = Heap()
@@ -81,5 +84,7 @@ class TestHeap(unittest.TestCase):
         sorted_arr = heapsort(arr)
         
         self.assertEqual(sorted_arr, [0, 1, 2, 3, 5, 9])
+"""
+
 if __name__ == "__main__":
     unittest.main()
