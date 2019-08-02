@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/libs/env/bin/python3
 import sys
 
 class Node():

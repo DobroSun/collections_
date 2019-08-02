@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/libs/env/bin/python3
 
 class Heap():
     def __init__(self, *args):
