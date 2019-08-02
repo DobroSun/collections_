@@ -9,15 +9,27 @@ class Stack():
         self.args = args
         self.create_stack(self.args)
 
+    def __iter__(self):
+        return iter(self.arr)
+
+    def __str__(self):
+        return str(self.arr)
+ 
+    def __reversed__(self):
+        cur = self.size - 1
+        while cur >= 0:
+            yield self.arr[cur]
+            cur -= 1
+
+    def __len__(self):
+        return self.size
+
     def create_stack(self, args):
         if args:
             for iterable in args:
                 for num in iterable:
                     self.append(num)
-
-    def __str__(self):
-        return str(self.arr)
-    
+   
     def append(self, x):
         assert type(x) is type(1) or type(x) is type(1.34)
         self.arr.append(x)
@@ -68,3 +80,4 @@ class Stack():
 
     def clear(self):
         Stack.__init__(self)
+

@@ -55,6 +55,28 @@ class TestStack(unittest.TestCase):
         A.clear()
         self.assertEqual(A.arr, [])
 
+    def test_iter(self):
+        A = Stack([1, 3, 7, 2])
+        L = []
+        for i in A:
+            L.append(i)
+        self.assertEqual(L, [1, 3, 7, 2])
+
+    def test_reversed(self):
+        A = Stack([3, 0, 7, 1])
+        L = []
+        for i in reversed(A):
+            L.append(i)
+        self.assertEqual(L, [1, 7, 0, 3])
+
+    def test_len(self):
+        A = Stack([3, 0, 2, 6])
+        self.assertEqual(len(A), 4)
+
+    def test_str(self):
+        A = Stack([3, 2, 1, 0])
+        self.assertEqual(str(A), '[3, 2, 1, 0]')
+
 class TestHashMap(unittest.TestCase):
     pass
 
