@@ -3,6 +3,9 @@
 import unittest
 from stack import Stack
 from heap import Heap, heapsort
+from queue import Queue
+
+
 
 class TestStack(unittest.TestCase):
     def test_append(self):
@@ -14,6 +17,9 @@ class TestStack(unittest.TestCase):
         A = Stack()
         with self.assertRaises(AssertionError):
             A.append('qwerty')
+        
+        A.append((3, {3:0}))
+        self.assertEqual(A.arr, [(3, {3: 0})])
 
     def test_pop(self):
         A = Stack()
@@ -77,36 +83,92 @@ class TestStack(unittest.TestCase):
         A = Stack([3, 2, 1, 0])
         self.assertEqual(str(A), '[3, 2, 1, 0]')
 
-class TestHashMap(unittest.TestCase):
-    pass
 
-"""
-class TestHeap(unittest.TestCase):
-    def test_add(self):
-        heap = Heap()
-        heap.add(5)
-        heap.add(3)
-        heap.add(7)
+class TestQueue(unittest.TestCase):
+    def test_iter(self):
+        Q = Queue([3, 9, 0 ,5])
+        L = []
+        for i in Q:
+            L.append(i)
+        self.assertEqual(L, [3, 9, 0, 5])
 
-        heap.add(1)
-        self.assertEqual(heap.arr, [7, 3, 5, 1])
+    def test_reversed(self):
+        Q = Queue([3, 9, 0 ,5])
+        L = []
+        for i in reversed(Q):
+            L.append(i)
+        self.assertEqual(L, [5, 0, 9, 3])
+        
+    def test_len(self):
+        Q = Queue((0, 7, 8, 9))
+        self.assertEqual(len(Q), 4)
+
+    def test_str(self):
+        Q = Queue([3, 9, 0, 4])
+        Q.append(2)
+        self.assertEqual(str(Q), '[3, 9, 0, 4, 2]')
+
+    def test_append(self):
+        Q = Queue()
+
+        Q.append(2)
+        self.assertEqual(Q.first.value, 2)
+        self.assertEqual(Q.last.value, 2)
+
+        self.assertEqual(Q.first.prev, None)
+        self.assertEqual(Q.last.next, None)
+        self.assertEqual(str(Q), '[2]')
+
+        Q.addleft(3)
+        self.assertEqual(Q.first.value, 3)
+        self.assertEqual(Q.last.value, 2)
+        self.assertEqual(str(Q), '[3, 2]')
+
+    def test_args(self):
+        Q = Queue([3, 5], (2, ), {1: 3})
+        self.assertEqual(str(Q), '[3, 5, 2, 1]')
 
     def test_pop(self):
-        heap = Heap()
-        heap.add(5)
-        heap.add(3)
-        heap.add(7)
-        heap.add(1)
-        self.assertEqual(heap.pop(), 7)
+        Q = Queue([2, 2, 3, 4, 8])
+        self.assertEqual(Q.pop(), 8)
 
-        self.assertEqual(heap.arr, [5, 3, 1])
-
-    def test_heapsort(self):
-        arr = [1, 5, 9, 3, 0, 2]
-        sorted_arr = heapsort(arr)
+        self.assertEqual(Q.popleft(), 2)
         
-        self.assertEqual(sorted_arr, [0, 1, 2, 3, 5, 9])
-"""
+        self.assertEqual(Q.pop(), 4)
+
+        self.assertEqual(Q.pop_k(3), 3)
+        self.assertEqual(Q.pop_k(10), None)
+
+    
+        
+
+    def test_clear(self):
+        Q = Queue([4, 2, 1])
+        Q.clear()
+        self.assertEqual(str(Q), '[]') 
+
+        self.assertEqual(Q.pop(), None)
+
+
+    def test_reverse(self):
+        Q = Queue((2, 9, 0, 7, 5))
+        Q.reverse()
+        self.assertEqual(str(Q), '[5, 7, 0, 9, 2]')
+
+    def test_sort(self):
+        Q = Queue([3, 5, 2, 9])
+        Q.sort()
+        self.assertEqual(str(Q), '[2, 3, 5, 9]')
+
+    def test_search(self):
+        Q = Queue({3: 0, 2: 1, 6: 9})
+        self.assertEqual(Q.search(2), True)
+        self.assertEqual(Q.search(10), False)
+
+
+
+
+
 
 if __name__ == "__main__":
     unittest.main()

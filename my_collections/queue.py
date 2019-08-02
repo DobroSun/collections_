@@ -1,5 +1,4 @@
 #!/libs/env/bin/python3
-import sys
 
 class Node():
     def __init__(self, p=None, n=None, v=None):
@@ -15,14 +14,35 @@ class Queue():
         self.size = 0
         
         self.args = args
-        self.create_queue(self.args)
+        self._create_queue(self.args)
 
-    def create_queue(self, args):
+    def __iter__(self):
+        cur = self.first
+        while cur is not None:
+            yield cur.value
+            cur = cur.next
+    
+    def __reversed__(self):
+        cur = self.last
+        while cur is not None:
+            yield cur.value
+            cur = cur.prev
+
+    def __len__(self):
+        return self.size
+
+    def __str__(self):
+        L = []
+        for i in self:
+            L.append(i)
+        return str(L)
+
+    def _create_queue(self, args):
         if args:
             for iterable in args:
                 for num in iterable:
-                    self.addright(num)
-
+                    self.append(num)
+    
     def addleft(self, x):
         if self.first is None:
             self.first = self.last = Node(None, None, x)
@@ -32,7 +52,7 @@ class Queue():
             p.prev = self.first
         self.size += 1
 
-    def addright(self, x):
+    def append(self, x):
         if self.first is None:
             self.first = self.last = Node(None, None, x)
         else:
@@ -55,8 +75,13 @@ class Queue():
             self.size -= 1
             return p
 
-    def popright(self):
-        if self.first is not None:
+    def pop(self):
+         if self.size == 1:
+            self.size -= 1
+            tmp = self.first.value
+            self.first = None
+            return tmp
+         if self.first is not None:
             p = self.last.value
             prev_node = self.last.prev
             prev_node.next = None
@@ -92,13 +117,11 @@ class Queue():
 
 
     def search(self, k):
-        cur = self.first
-        while cur is not None:
-            if cur.value == k:
+        for i in self:
+            if i == k:
                 return True
-            cur = cur.next
         return False
-    
+
     def reverse(self):
         cur = self.first
         while cur is not None:
@@ -113,27 +136,6 @@ class Queue():
                 self.first = cur
             cur = tmp
 
-    def print_(self):
-        if self.first is None:
-            print(None)
-            return
-        print("[")
-        cur = self.first
-        while cur is not None:
-            print(cur.value, end="	")
-            cur = cur.next
-        print()
-        print("]")
-        print()
-        print("[")
-
-        cur = self.last
-        while cur is not None:
-            print(cur.value, end="	")
-            cur = cur.prev
-        print()
-        print("]")
-
     def sort(self):
         for _ in range(self.size):
             cur = self.first
@@ -144,31 +146,4 @@ class Queue():
 
     def clear(self):
         Queue.__init__(self)
-
-
-if __name__ == "__main__":
-    queue = Queue([2], {3: 2, 4: 5, 1: -10}, (1, 9, 0, 3))
-    print(queue.args)
-    queue.print_()
-    sys.exit(0)
-    queue.addleft(5)
-    queue.addleft(2)
-    queue.addleft(10)
-    queue.addright(9)
-    queue.addright(8)
-    queue.addleft(4)
-    queue.addright(3)
-    queue.popright()
-    queue.popleft()
-
-    queue.addright(8)
-    queue.addleft(4)
-    queue.addright(3)
-    queue.print_()
-    print('-' * 100)
-    queue.sort()
-    queue.print_()
-    print('-' * 100)
-    queue.clear()
-    queue.print_()
 

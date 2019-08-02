@@ -31,7 +31,7 @@ class Stack():
                     self.append(num)
    
     def append(self, x):
-        assert type(x) is type(1) or type(x) is type(1.34)
+        assert type(x) in [type(1), type(1.34), type([]), type(()), type({}), type(set())]
         self.arr.append(x)
         self.size += 1
         if len(self.arr) == 1:
