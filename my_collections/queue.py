@@ -1,4 +1,4 @@
-#!/libs/env/bin/python3
+#!/usr/bin/env python3
 
 class Node():
     def __init__(self, p=None, n=None, v=None):

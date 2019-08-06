@@ -1,4 +1,4 @@
-#!/libs/env/bin/python3
+#!/usr/bin/env python3
 
 import unittest
 from stack import Stack
@@ -83,6 +83,14 @@ class TestStack(unittest.TestCase):
         A = Stack([3, 2, 1, 0])
         self.assertEqual(str(A), '[3, 2, 1, 0]')
 
+    def test_funcs(self):
+        A = Stack([2, 4, 9, 0])
+        self.assertEqual(min(A), 0)
+        self.assertEqual(max(A), 9)
+        self.assertEqual(sum(A), 15)
+
+
+
 
 class TestQueue(unittest.TestCase):
     def test_iter(self):
@@ -139,16 +147,12 @@ class TestQueue(unittest.TestCase):
         self.assertEqual(Q.pop_k(3), 3)
         self.assertEqual(Q.pop_k(10), None)
 
-    
-        
-
     def test_clear(self):
         Q = Queue([4, 2, 1])
         Q.clear()
         self.assertEqual(str(Q), '[]') 
 
         self.assertEqual(Q.pop(), None)
-
 
     def test_reverse(self):
         Q = Queue((2, 9, 0, 7, 5))

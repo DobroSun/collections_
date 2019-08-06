@@ -1,4 +1,4 @@
-#!/libs/env/bin/python3
+#!/usr/bin/env python3
 
 # ХешТаблица с закрытой адресацией
 class HashMap():

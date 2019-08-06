@@ -1,4 +1,4 @@
-#!/libs/env/bin/python3
+#!/usr/bin/env python3
 
 class Node():
     def __init__(self, k, v):
@@ -10,7 +10,12 @@ class Node():
         self.parent = None
 
 
+
 # Двоичное дерево без балансировок.
+
+# Have to rewrite all link using *weakref's*
+import weakref
+
 class BinaryTree():
     def __init__(self):
         self.head = None
@@ -39,7 +44,7 @@ class BinaryTree():
             return
         from queue import Queue
         q = Queue()
-        q.addright(self.head)
+        q.append(self.head)
         count = 1
         print(self.head.key)
         while q.size:
@@ -54,7 +59,7 @@ class BinaryTree():
                     continue
                 for nei in [cur.left, cur.right]:
                     if nei is not None:
-                        q.addright(nei)
+                        q.append(nei)
                         count += 1 
                 iteration += 1
             tmp = q.first
@@ -175,14 +180,14 @@ class BinaryTree():
         from stack import Stack
         from queue import Queue
         q = Queue()
-        q.addright(self.head)
+        q.append(self.head)
         A = Stack()
         A.append(self.head.key)
         while q.size:
             cur = q.popleft()
             for nei in [cur.left, cur.right]:
                 if nei is not None:
-                    q.addright(nei)
+                    q.append(nei)
                     A.append(nei.key)
         return A.arr
     
