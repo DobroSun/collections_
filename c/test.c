@@ -6,25 +6,32 @@
 
 TEST(My_Case) {
     INIT();
-    int *a = {2, 3, 4, 4};
-    int b = 2;
-    ASSERT_EQ(a, b);
-    RETURN();
+    Stack *st = stack.init(10);
+
+    ASSERT_EQ(stack.empty(st), 1);
+    ASSERT_EQ(stack.size(st), 0);
+
+    int i;
+    for(i = 0; i < 302; i++) {
+        element val;
+        init_element(&val, i);
+
+
+        stack.push(st, val);
+        element get = stack.back(st);
+        ASSERT_EQ(get.data, i);
+    }
+    ASSERT_EQ(stack.size(st), i);
+
+    stack.del(st);
+    return TEST_CASE_RESULT;
 }
 
 int main(int argc, char **argv) {
     RUN(My_Case);
 
-
-
-/*  
-    Stack *st = stack.init(2);
-
-    for(int i = 0; i < 302; i++) {
-        stack.push(st, i);
-        stack.back(st);
-        stack.size(st);
-    }
+    //printf("%i", check_literal(stack.empty(st)));
+/*
     for(int i = 0; i < 302; i++) {
         stack.pop(st);
         stack.size(st);
@@ -32,8 +39,7 @@ int main(int argc, char **argv) {
     printf(yellow("NEW MAXSIZE: ")"%i", stack.maxsize(st));
     printf("\n");
     printf(green("Passed")"\n");
-
-    stack.del(st);
 */
+    //stack.del(st);
     return 0;
 }
