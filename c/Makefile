@@ -1,16 +1,5 @@
-CC=gcc
-CFLAGS=-Wall -I./include/ -I.src/
-DEPS=src/stack.h
+.PHONY: run_all_tests
 
-run: clean test
-	@./test
-
-%.o: %.c $(DEPS)
-	@$(CC) -c -o $@ $< $(CFLAGS)
-
-test: test.o
-	@$(CC) -o test test.o $(CFLAGS)
-
-.PHONY: clean
-clean:
-	@rm -f *.o test
+run_all_tests:
+	@cd src/stack && make -s --no-print-directory && cd ../../ && \
+	cd src/deque && make -s --no-print-directory && cd ../../

@@ -1,6 +1,6 @@
-#include "globals.h"
 #include "element.h"
 #include <assert.h>
+#include <stdlib.h>
 
 typedef struct Stack {
     element *arr;
@@ -46,14 +46,14 @@ unsigned empty(Stack *st) {
     return (st->top == 0)? 1: 0;
 }
 
-void push(Stack *st, element value) {
+void push(Stack *st, element *value) {
     if(st->top >= st->maxsize) {
         st->maxsize *= 10;
         _rewrite(st, st->maxsize);
     }
     assert(st->top < st->maxsize && "Error: Top of stack is greater than maxsize!");
 
-    st->arr[st->top] = value;
+    st->arr[st->top] = *value;
     st->top++;
 }
 
@@ -90,7 +90,7 @@ static const struct _Stack {
     unsigned (*size)(Stack *st); 
     unsigned (*empty)(Stack *st);
 
-    void (*push)(Stack *st, element value);
+    void (*push)(Stack *st, element *value);
     element (*back)(Stack *st);
     void (*remove_last)(Stack *st);
     element (*pop)(Stack *st);

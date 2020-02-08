@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_GREEN "\x1b[32m"
@@ -39,8 +40,8 @@
 #define check_literal(A) (#A[0] == '"')? 1: 0
 #define check_types(A, B) !strcmp(typename(A), typename(B))
 
-            
-
+// FIXME:
+// TEST(A) Handles only one test case per file!!!
 #define TEST(A) int TestCase__##A(const char *A)
 
 #define INIT() \
