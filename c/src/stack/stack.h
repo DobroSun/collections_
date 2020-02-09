@@ -2,9 +2,10 @@
 #include <assert.h>
 #include <stdlib.h>
 
+typedef element* Stack_iterator;
 typedef struct Stack {
     element *arr;
-    unsigned maxsize, top;
+    unsigned maxsize, top, iterator_counter;
 } Stack;
 
 
@@ -81,6 +82,50 @@ element pop(Stack *st) {
     return res;
 }
 
+element *begin(Stack *st) {
+    /*
+    element val;
+    if(!size(st)) {
+        dummy(&val);
+    } else {
+    
+    }
+    */
+    st->iterator_counter = 0;
+    return &st->arr[st->iterator_counter];
+}
+
+element *end(Stack *st) {
+    //element val;
+    /*
+    if(!size(st)) {
+        dummy(&val);
+    } else {
+        val = 
+    }
+    */
+    return &st->arr[size(st)];
+}
+
+element *next(Stack *st) {
+    st->iterator_counter++;
+    printf("%i and %i\n", st->iterator_counter, size(st)-1);
+    printf("%i <- ==\n", (st->iterator_counter == size(st)-1));
+
+    if(st->iterator_counter > size(st)) {
+        st->iterator_counter = 0;
+    }
+
+    //element val;
+    /*
+    if(!size(st)) {
+        dummy(&val);
+    } else {
+        val = 
+    }
+    */
+    return &st->arr[st->iterator_counter];
+}
 
 static const struct _Stack {
     Stack *(*init)(size_t size);
@@ -94,6 +139,10 @@ static const struct _Stack {
     element (*back)(Stack *st);
     void (*remove_last)(Stack *st);
     element (*pop)(Stack *st);
+
+    element *(*begin)(Stack *st);
+    element *(*end)(Stack *st);
+    element *(*next)(Stack *st);
 } stack = {
     init,
     del,
@@ -104,4 +153,7 @@ static const struct _Stack {
     back,
     remove_last,
     pop,
+    begin,
+    end,
+    next,
 };

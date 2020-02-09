@@ -8,17 +8,23 @@ TEST(Stack_Case) {
     ASSERT_EQ(stack.empty(st), 1);
     ASSERT_EQ(stack.size(st), 0);
 
-    int i;
-    for(i = 0; i < 302; i++) {
-        element val;
-        init_element(&val, i);
+    element val;
+    init_element(&val, 2);
+    element vv;
+    init_element(&vv, 3);
+    element vvv;
+    init_element(&vvv, 4);
 
+    stack.push(st, &val);
+    stack.push(st, &vv);
+    stack.push(st, &vvv);
+    ASSERT_EQ(stack.size(st), 3);
+    ASSERT_EQ(st->arr[1].data, 3);
 
-        stack.push(st, &val);
-        element get = stack.back(st);
-        ASSERT_EQ(get.data, i);
+    Stack_iterator i;
+    for(i = stack.begin(st); i < stack.end(st); ++i/*stack.next(st)*/) { 
+        printf("%i <- given value\n", (*i).data);
     }
-    ASSERT_EQ(stack.size(st), i);
 
     stack.del(st);
 
