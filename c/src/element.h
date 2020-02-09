@@ -12,4 +12,12 @@ void dummy(element *val) {
 void init_element(element *val, int data) {
     val->data = data;
 }
+
+int equals(element *self, element *other) {
+    if(other->data == self->data) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 #endif

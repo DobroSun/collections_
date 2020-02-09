@@ -21,7 +21,7 @@ void _rewrite(Stack *st, size_t size) {
 
 Stack *init(size_t size) {
     Stack *st = (Stack*)malloc(sizeof(Stack));
-    st->arr = (element*)malloc(sizeof(size));
+    st->arr = (element*)malloc(size * sizeof(element));
     st->maxsize = size;
     st->top = 0;
 
@@ -47,14 +47,14 @@ unsigned empty(Stack *st) {
     return (st->top == 0)? 1: 0;
 }
 
-void push(Stack *st, element *value) {
+void push(Stack *st, element val) {
     if(st->top >= st->maxsize) {
         st->maxsize *= 10;
         _rewrite(st, st->maxsize);
     }
     assert(st->top < st->maxsize && "Error: Top of stack is greater than maxsize!");
 
-    st->arr[st->top] = *value;
+    st->arr[st->top] = val;
     st->top++;
 }
 
@@ -83,28 +83,23 @@ element pop(Stack *st) {
 }
 
 element *begin(Stack *st) {
-    /*
-    element val;
-    if(!size(st)) {
-        dummy(&val);
-    } else {
-    
-    }
-    */
     st->iterator_counter = 0;
     return &st->arr[st->iterator_counter];
 }
 
 element *end(Stack *st) {
-    //element val;
-    /*
-    if(!size(st)) {
-        dummy(&val);
-    } else {
-        val = 
-    }
-    */
     return &st->arr[size(st)];
+}
+
+element *find(Stack *st, element val) {
+
+    Stack_iterator i;
+    for(i = begin(st); i < end(st); i++) {
+        if(equals(i, &val)) {
+            return i;
+        }
+    }
+    return end(st);
 }
 
 static const struct _Stack {
@@ -115,10 +110,11 @@ static const struct _Stack {
     unsigned (*size)(Stack *st); 
     unsigned (*empty)(Stack *st);
 
-    void (*push)(Stack *st, element *value);
+    void (*push)(Stack *st, element val);
     element (*back)(Stack *st);
     void (*remove_last)(Stack *st);
     element (*pop)(Stack *st);
+    element *(*find)(Stack *st, element val);
 
     element *(*begin)(Stack *st);
     element *(*end)(Stack *st);
@@ -132,6 +128,7 @@ static const struct _Stack {
     back,
     remove_last,
     pop,
+    find,
     begin,
     end,
 };
