@@ -9,7 +9,7 @@ typedef struct Node {
     element val;
 } Node;
 
-void init_first(Node *n, element *el) {
+void init_el(Node *n, element *el) {
     n->next = NULL;
     n->prev = NULL;
     n->val = *el;
@@ -23,19 +23,41 @@ typedef struct Deque {
 
 Deque *init() {
     Deque *q = (Deque*)malloc(sizeof(Deque));
-    q->head = NULL;
-    q->tail = NULL;
+    q->head = (Node*)malloc(sizeof(Node));
+    q->tail = q->head;
     q->size = 0;
 
     assert(q && "Error: Cannot allocate memory for queue!");
+    assert(q->head && "Error: Cannot allocate memory for queue's element!");
     return q;
 }
 
 void del(Deque *q) {
+/*
+    Node *tmp = q->head;
+    while(tmp) {
+        Node *cur = tmp;
+
+        tmp = cur->next;
+        free(cur);
+    }
+*/
 }
 
 unsigned size(Deque *q) {
     return q->size;
+}
+
+unsigned empty(Deque *q) {
+    return (q->size)? 0: 1;
+}
+
+Node head(Deque *q) {
+    return *(q->head);
+}
+
+Node tail(Deque *q) {
+    return *(q->tail);
 }
 
 element front(Deque *q) {
@@ -47,34 +69,103 @@ element back(Deque *q) {
 }
 
 void push_back(Deque *q, element *el) {
-    if(!q->head && !q->tail) {
-        q->head = (Node*)malloc(sizeof(Node));
-        q->tail = (Node*)malloc(sizeof(Node));
-        assert(q->head && "Error: Cannot allocate memory for queue's element!");
-        assert(q->tail && "Error: Cannot allocate memory for queue's element!");
-
-        init_first(q->head, el);
-        init_first(q->tail, el);
+    if(!q->size) {
+        init_el(q->head, el);
     } else {
-        printf("HERE\n");
+        Node *pp = (Node*)malloc(sizeof(Node));
+        Node *tmp = q->tail;
+
+        q->tail = pp;
+        init_el(q->tail, el);
+        tmp->next = q->tail;
+        q->tail->prev = tmp;
     }
+    q->size++;
 }
+
+void push_front(Deque *q, element *el) {
+    if(!q->size) {
+        init_el(q->head, el);
+    } else {
+        Node *pp = (Node*)malloc(sizeof(Node));
+        Node *tmp = q->head;
+
+        assert(pp && "Error: Cannot allocate memory for queue's element");
+
+        q->head = pp;
+        init_el(q->head, el);
+        tmp->prev = q->head;
+        q->head->next = tmp;
+    }
+    q->size++;
+}
+
+element pop_front(Deque *q) {
+    element res;
+    if(!q->size) {
+        dummy(&res);
+    } else if(q->head == q->tail) {
+        res = front(q);
+        free(q->head);
+    } else {
+        res = front(q);
+        Node *tmp = q->head->next;
+        free(q->head);
+
+        q->head = tmp;
+        tmp->prev = NULL;
+    }
+    q->size--;
+    return res;
+}
+
+element pop_back(Deque *q) {
+    element res;
+    if(!q->size) {
+        dummy(&res);
+    } else if(q->head == q->tail) {
+        res = back(q);
+        free(q->head);
+    } else {
+        res = back(q);
+        Node *tmp = q->tail->prev;
+        free(q->tail);
+
+        q->tail = tmp;
+        tmp->next = NULL;
+    }
+    q->size--;
+    return res;
+}
+
 
 static const struct _Deque {
     Deque *(*init)();
     void (*del)(Deque *q);
 
     unsigned (*size)(Deque *q);
+    unsigned (*empty)(Deque *q);
+    Node (*head)(Deque *q);
+    Node (*tail)(Deque *q);
 
     element (*front)(Deque *q);
     element (*back)(Deque *q);
+    void (*push_front)(Deque *q, element *el);
     void (*push_back)(Deque *q, element *el);
+    element (*pop_front)(Deque *q);
+    element (*pop_back)(Deque *q);
 } deque = {
     init,
     del,
     size,
+    empty,
+    head,
+    tail,
     front,
     back,
+    push_front,
     push_back,
+    pop_front,
+    pop_back,
 };
 

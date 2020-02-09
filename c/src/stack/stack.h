@@ -92,7 +92,6 @@ element *end(Stack *st) {
 }
 
 element *find(Stack *st, element val) {
-
     Stack_iterator i;
     for(i = begin(st); i < end(st); i++) {
         if(equals(i, &val)) {
@@ -100,6 +99,21 @@ element *find(Stack *st, element val) {
         }
     }
     return end(st);
+}
+
+void clear(Stack *st) {
+    int decrease_count = 0;
+    element tt;
+    dummy(&tt);
+
+    Stack_iterator i;
+    for(i = begin(st); i < end(st); i++) {
+        if(!equals(i, &tt)) {
+            decrease_count++;
+            *i = tt;
+        }
+    }
+    st->top -= decrease_count;
 }
 
 static const struct _Stack {
@@ -114,10 +128,11 @@ static const struct _Stack {
     element (*back)(Stack *st);
     void (*remove_last)(Stack *st);
     element (*pop)(Stack *st);
-    element *(*find)(Stack *st, element val);
 
     element *(*begin)(Stack *st);
     element *(*end)(Stack *st);
+    element *(*find)(Stack *st, element val);
+    void (*clear)(Stack *st);
 } stack = {
     init,
     del,
@@ -128,7 +143,8 @@ static const struct _Stack {
     back,
     remove_last,
     pop,
-    find,
     begin,
     end,
+    find,
+    clear,
 };
