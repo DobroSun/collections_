@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 typedef struct Node Node;
+typedef struct Node Deque_iterator;
 typedef struct Node {
     Node *next;
     Node *prev;
@@ -138,6 +139,17 @@ element pop_back(Deque *q) {
     return res;
 }
 
+element *find(Deque *q, element val) {
+    Node *cur = q->head;
+    while(cur) {
+        if(equals(&cur->val, &val)) {
+            return &cur->val;
+        }
+        cur = cur->next;
+    }
+    return NULL;
+}
+
 
 static const struct _Deque {
     Deque *(*init)();
@@ -154,6 +166,8 @@ static const struct _Deque {
     void (*push_back)(Deque *q, element *el);
     element (*pop_front)(Deque *q);
     element (*pop_back)(Deque *q);
+
+    element *(*find)(Deque *q, element val);
 } deque = {
     init,
     del,
@@ -167,5 +181,6 @@ static const struct _Deque {
     push_back,
     pop_front,
     pop_back,
+    find,
 };
 

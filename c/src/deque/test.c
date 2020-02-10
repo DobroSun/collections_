@@ -39,6 +39,11 @@ TEST(Deque_Case) {
     ASSERT_EQ(deque.tail(q).prev->val.data, 3);
     ASSERT_EQ(deque.tail(q).prev->prev->val.data, 2);
 
+    element bv; dummy(&bv);
+    ASSERT_EQ((deque.find(q, bv) == NULL), 1);
+    ASSERT_EQ(equals(deque.find(q, vvv), &vvv), 1);
+
+
     element gg = deque.pop_front(q);
     element ggf = deque.pop_front(q);
     element ggff = deque.pop_front(q);
